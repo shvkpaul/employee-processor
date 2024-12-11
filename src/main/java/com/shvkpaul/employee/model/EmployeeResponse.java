@@ -1,4 +1,4 @@
-package com.shvkpaul.employee.client.model;
+package com.shvkpaul.employee.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,8 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Employee {
-    private String name;
+public class EmployeeResponse {
+
+    private Long id;
+
+    @JsonProperty("first_name")
+    private String firstname;
+
+    private String surname;
 
     @JsonProperty("role_id")
     private Long roleId;

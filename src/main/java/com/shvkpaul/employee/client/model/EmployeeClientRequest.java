@@ -10,9 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmployeeResponse {
-    private Long id;
-
+public class EmployeeClientRequest {
     private String name;
 
     @JsonProperty("role_id")

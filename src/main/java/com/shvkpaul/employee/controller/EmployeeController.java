@@ -1,40 +1,40 @@
 package com.shvkpaul.employee.controller;
 
-import com.shvkpaul.employee.client.EmployeeClient;
-import com.shvkpaul.employee.client.model.EmployeeResponse;
 import com.shvkpaul.employee.client.model.GenericResponse;
 import com.shvkpaul.employee.model.EmployeeRequest;
+import com.shvkpaul.employee.model.EmployeeResponse;
+import com.shvkpaul.employee.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeClient employeeClient;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeClient employeeClient) {
-        this.employeeClient = employeeClient;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/{id}")
     public EmployeeResponse getEmployee(@PathVariable Long id) {
-        return employeeClient.getEmployee(id);
+        return employeeService.getEmployee(id);
     }
 
     @PostMapping
     public EmployeeResponse createEmployee(@RequestBody EmployeeRequest employeeRequest) {
-        return employeeClient.createEmployee(employeeRequest);
+        return employeeService.createEmployee(employeeRequest);
     }
 
     @PutMapping("/{id}")
     public EmployeeResponse updateEmployee(
         @RequestBody EmployeeRequest employeeRequest,
         @PathVariable Long id) {
-        return employeeClient.updateEmployee(employeeRequest,id);
+        return employeeService.updateEmployee(id, employeeRequest);
     }
 
     @DeleteMapping("/{id}")
     public GenericResponse deleteEmployee(@PathVariable Long id) {
-        return employeeClient.deleteEmployee(id);
+        return employeeService.deleteEmployee(id);
     }
 }

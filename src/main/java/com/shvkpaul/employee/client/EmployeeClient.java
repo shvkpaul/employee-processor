@@ -1,14 +1,11 @@
 package com.shvkpaul.employee.client;
 
-import com.shvkpaul.employee.client.model.Employee;
-import com.shvkpaul.employee.client.model.EmployeeResponse;
+import com.shvkpaul.employee.client.model.EmployeeClientRequest;
+import com.shvkpaul.employee.client.model.EmployeeClientResponse;
 import com.shvkpaul.employee.client.model.GenericResponse;
-import com.shvkpaul.employee.model.EmployeeRequest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-
-import static com.shvkpaul.employee.mapper.EmployeeMapper.toEmployee;
 
 @Component
 public class EmployeeClient {
@@ -19,16 +16,16 @@ public class EmployeeClient {
         this.restClient = restClient;
     }
 
-    public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
+    public EmployeeClientResponse createEmployee(EmployeeClientRequest employeeClientRequest) {
         return restClient.post()
             .uri("/api/employees")
-            .body(toEmployee(employeeRequest))
+            .body(employeeClientRequest)
             .retrieve()
             .body(new ParameterizedTypeReference<>() {
             });
     }
 
-    public EmployeeResponse getEmployee(Long id) {
+    public EmployeeClientResponse getEmployee(Long id) {
         return restClient.get()
             .uri("/api/employees/{id}", id)
             .retrieve()
@@ -44,10 +41,10 @@ public class EmployeeClient {
             });
     }
 
-    public EmployeeResponse updateEmployee(EmployeeRequest employeeRequest,Long id) {
+    public EmployeeClientResponse updateEmployee(Long id, EmployeeClientRequest employeeClientRequest) {
         return restClient.put()
             .uri("/api/employees/{id}", id)
-            .body(toEmployee(employeeRequest))
+            .body(employeeClientRequest)
             .retrieve()
             .body(new ParameterizedTypeReference<>() {
             });
