@@ -5,6 +5,7 @@ import com.shvkpaul.employee.error.RoleValidator;
 import com.shvkpaul.employee.model.EmployeeRequest;
 import com.shvkpaul.employee.model.EmployeeResponse;
 import com.shvkpaul.employee.service.EmployeeService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -20,16 +21,17 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public EmployeeResponse getEmployee(
         @PathVariable Long id,
         @RequestHeader("Role") String role,
         @RequestHeader Map<String, String> headers) {
         RoleValidator.validateRoleHeader(headers, role);
-        RoleValidator.checkUserRole(role);
         return employeeService.getEmployee(id);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public EmployeeResponse createEmployee(
         @RequestBody EmployeeRequest employeeRequest,
         @RequestHeader("Role") String role,
@@ -40,6 +42,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER')")
     public EmployeeResponse updateEmployee(
         @RequestBody EmployeeRequest employeeRequest,
         @PathVariable Long id,
@@ -51,6 +54,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public GenericResponse deleteEmployee(
         @PathVariable Long id,
         @RequestHeader("Role") String role,
