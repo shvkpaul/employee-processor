@@ -14,7 +14,7 @@ The Employee Processor is a Spring Boot application that provides RESTful APIs t
 
 ### Clone the Repository
 ```sh
-git clone https://github.com
+git clone https://github.com/shvkpaul/employee-processor
 ```
 
 Build the Project : mvn clean install
