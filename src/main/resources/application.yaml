@@ -6,7 +6,6 @@ server:
   port: 8091
 
 
-rest:
-  client:
-    base:
-      url: http://localhost:8090
+client:
+  base:
+    url: http://localhost:8090

@@ -3,50 +3,45 @@ package com.shvkpaul.employee.client;
 import com.shvkpaul.employee.client.model.EmployeeClientRequest;
 import com.shvkpaul.employee.client.model.EmployeeClientResponse;
 import com.shvkpaul.employee.client.model.GenericResponse;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class EmployeeClient {
 
-    private final RestClient restClient;
+    private final WebClient webClient;
 
-    public EmployeeClient(RestClient restClient) {
-        this.restClient = restClient;
+    public EmployeeClient(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     public EmployeeClientResponse createEmployee(EmployeeClientRequest employeeClientRequest) {
-        return restClient.post()
+        return webClient.post()
             .uri("/api/employees")
-            .body(employeeClientRequest)
+            .bodyValue(employeeClientRequest)
             .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
+            .bodyToMono(EmployeeClientResponse.class).block();
     }
 
     public EmployeeClientResponse getEmployee(Long id) {
-        return restClient.get()
+        return webClient.get()
             .uri("/api/employees/{id}", id)
             .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
+            .bodyToMono(EmployeeClientResponse.class).block();
     }
 
     public GenericResponse deleteEmployee(Long id) {
-        return restClient.delete()
+        return webClient.delete()
             .uri("/api/employees/{id}", id)
             .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
+            .bodyToMono(GenericResponse.class).block();
     }
 
     public EmployeeClientResponse updateEmployee(Long id, EmployeeClientRequest employeeClientRequest) {
-        return restClient.put()
+        return webClient.put()
             .uri("/api/employees/{id}", id)
-            .body(employeeClientRequest)
+            .bodyValue(employeeClientRequest)
             .retrieve()
-            .body(new ParameterizedTypeReference<>() {
-            });
+            .bodyToMono(EmployeeClientResponse.class).block();
     }
 }
