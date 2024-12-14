@@ -15,16 +15,14 @@ The Employee Processor is a Spring Boot application that provides RESTful APIs t
 ### Clone the Repository
 ```sh
 git clone https://github.com
- 
- 
- 
+```
+
 Build the Project : mvn clean install
 
 Run the Application : mvn spring-boot:run
 
 Running Tests
-To run the unit and integration tests, use the following command: 
-mvn test
+To run the unit and integration tests, use the following command: mvn test
 
 Steps to build and run the Docker image:
 
@@ -32,6 +30,5 @@ Build the Docker image:
     docker build -t employee-processor .
 Run the Docker container:
     docker run -p 8080:8080 employee-processor
-
 
 Additionally added postman collection, look for employee-processor from the root directory of the collection.
