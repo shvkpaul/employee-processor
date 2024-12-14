@@ -23,14 +23,29 @@ public class EmployeeService {
         this.employeeClient = employeeClient;
     }
 
+    @Retryable(
+        value = { Exception.class },
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 20000)
+    )
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
         return toEmployeeResponse(employeeClient.createEmployee(toEmployeeClientRequest(employeeRequest)));
     }
 
+    @Retryable(
+        value = { Exception.class },
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 20000)
+    )
     public EmployeeResponse getEmployee(Long employeeId) {
         return toEmployeeResponse(employeeClient.getEmployee(employeeId));
     }
 
+    @Retryable(
+        value = { Exception.class },
+        maxAttempts = 3,
+        backoff = @Backoff(delay = 20000)
+    )
     public EmployeeResponse updateEmployee(Long employeeId, EmployeeRequest employeeRequest) {
         return toEmployeeResponse(employeeClient.updateEmployee(employeeId, toEmployeeClientRequest(employeeRequest)));
     }
