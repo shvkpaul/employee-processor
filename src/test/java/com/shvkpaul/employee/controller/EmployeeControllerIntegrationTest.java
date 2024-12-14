@@ -72,9 +72,26 @@ class EmployeeControllerIntegrationTest {
     }
 
     @Test
-    void shouldUpdateEmployee() throws Exception {
-        Long employeeId = 3L;
-        EmployeeRequest employeeRequest = new EmployeeRequest("M", "Das");
+    void shouldCreateAndUpdateEmployee() throws Exception {
+        // Create Employee
+        EmployeeRequest employeeRequest = new EmployeeRequest("S", "Paul");
+        EmployeeResponse createdEmployee = this.webTestClient
+            .post()
+            .uri("/employees")
+            .header(HttpHeaders.AUTHORIZATION, ADMIN_AUTH)
+            .header("Role", "ADMIN")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(objectMapper.writeValueAsString(employeeRequest))
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON)
+            .expectBody(EmployeeResponse.class)
+            .returnResult()
+            .getResponseBody();
+
+        assertThat(createdEmployee).isNotNull();
+        Long employeeId = createdEmployee.getId();
+        EmployeeRequest updatedRequest = new EmployeeRequest("M", "Das");
 
         this.webTestClient
             .put()
@@ -82,7 +99,7 @@ class EmployeeControllerIntegrationTest {
             .header(HttpHeaders.AUTHORIZATION, USER_AUTH)
             .header("Role", "USER")
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(objectMapper.writeValueAsString(employeeRequest))
+            .bodyValue(objectMapper.writeValueAsString(updatedRequest))
             .exchange()
             .expectStatus().isOk()
             .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -91,8 +108,8 @@ class EmployeeControllerIntegrationTest {
                 EmployeeResponse employeeResponse = response.getResponseBody();
                 assertThat(employeeResponse).isNotNull();
                 assertThat(employeeResponse.getId()).isEqualTo(employeeId);
-                assertThat(employeeResponse.getFirstname()).isEqualTo(employeeRequest.getFirstname());
-                assertThat(employeeResponse.getSurname()).isEqualTo(employeeRequest.getSurname());
+                assertThat(employeeResponse.getFirstname()).isEqualTo(updatedRequest.getFirstname());
+                assertThat(employeeResponse.getSurname()).isEqualTo(updatedRequest.getSurname());
             });
     }
 
